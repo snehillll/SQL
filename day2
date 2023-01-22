@@ -1,0 +1,97 @@
+Last login: Mon Jan 16 14:43:21 on ttys000
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+L-JHYR4J49YP:~ snehilpatel$ /Library/PostgreSQL/15/scripts/runpsql.sh; exit
+Server [localhost]: 
+Database [postgres]: 
+Port [5432]: 
+Username [postgres]: 
+Password for user postgres: 
+psql (15.1)
+Type "help" for help.
+
+postgres=# \c database
+You are now connected to database "database" as user "postgres".
+database=# begin transaction;
+BEGIN
+database=*# delete from employees where emp_id=2;
+DELETE 1
+database=*# select * from employees;
+ emp_id | first_name | last_name | gender | birthdate | email | salary 
+--------+------------+-----------+--------+-----------+-------+--------
+      4 | charles    | king      |        |           |       |       
+      5 | Charlton   | Duran     |        |           |       |       
+      6 | Crlton     | Duran     |        |           |       |       
+(3 rows)
+
+database=*# rollback;
+ROLLBACK
+database=# select * from employees;
+ emp_id | first_name | last_name | gender | birthdate  | email | salary 
+--------+------------+-----------+--------+------------+-------+--------
+      2 | Susan      | Klassen   | F      | 2002-03-26 |       |       
+      4 | charles    | king      |        |            |       |       
+      5 | Charlton   | Duran     |        |            |       |       
+      6 | Crlton     | Duran     |        |            |       |       
+(4 rows)
+
+database=# create index abc on employee(first_name);
+ERROR:  column "first_name" does not exist
+database=# create index abc on employees(first_name);
+CREATE INDEX
+database=# select * from employees;
+ emp_id | first_name | last_name | gender | birthdate  | email | salary 
+--------+------------+-----------+--------+------------+-------+--------
+      2 | Susan      | Klassen   | F      | 2002-03-26 |       |       
+      4 | charles    | king      |        |            |       |       
+      5 | Charlton   | Duran     |        |            |       |       
+      6 | Crlton     | Duran     |        |            |       |       
+(4 rows)
+
+database=# create index abc on employees(first_name);
+ERROR:  relation "abc" already exists
+database=# explain select * frm employees where emp_id='3';
+ERROR:  syntax error at or near "frm"
+LINE 1: explain select * frm employees where emp_id='3';
+                         ^
+database=# explain select * from employees where emp_id='3';
+                        QUERY PLAN                         
+-----------------------------------------------------------
+ Seq Scan on employees  (cost=0.00..1.05 rows=1 width=474)
+   Filter: (emp_id = 3)
+(2 rows)
+
+database=# select * from employees;
+ emp_id | first_name | last_name | gender | birthdate  | email | salary 
+--------+------------+-----------+--------+------------+-------+--------
+      2 | Susan      | Klassen   | F      | 2002-03-26 |       |       
+      4 | charles    | king      |        |            |       |       
+      5 | Charlton   | Duran     |        |            |       |       
+      6 | Crlton     | Duran     |        |            |       |       
+(4 rows)
+
+database=# create view x as select emp_id, first_name from employees;
+CREATE VIEW
+database=# select * from x;
+ emp_id | first_name 
+--------+------------
+      2 | Susan
+      4 | charles
+      5 | Charlton
+      6 | Crlton
+(4 rows)
+
+database=# drop view x;
+DROP VIEW
+database=# select * from employees;
+ emp_id | first_name | last_name | gender | birthdate  | email | salary 
+--------+------------+-----------+--------+------------+-------+--------
+      2 | Susan      | Klassen   | F      | 2002-03-26 |       |       
+      4 | charles    | king      |        |            |       |       
+      5 | Charlton   | Duran     |        |            |       |       
+      6 | Crlton     | Duran     |        |            |       |       
+(4 rows)
+
+database=# 

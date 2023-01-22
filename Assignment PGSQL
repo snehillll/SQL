@@ -1,0 +1,140 @@
+Last login: Tue Jan 17 09:11:29 on ttys000
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+L-JHYR4J49YP:~ snehilpatel$ /Library/PostgreSQL/15/scripts/runpsql.sh; exit
+Server [localhost]: 
+Database [postgres]: 
+Port [5432]: 
+Username [postgres]: 
+Password for user postgres: 
+psql (15.1)
+Type "help" for help.
+
+postgres=# create asssignment;
+ERROR:  syntax error at or near "asssignment"
+LINE 1: create asssignment;
+               ^
+postgres=# create database assignment;
+CREATE DATABASE
+postgres=# \c assignment 
+You are now connected to database "assignment" as user "postgres".
+assignment=# Create table User( userid int, first_name varchar(255), last_name varchar(255), mobile(int), email varchar(255), username varchar(255), password varchar(255));
+ERROR:  syntax error at or near "User"
+LINE 1: Create table User( userid int, first_name varchar(255), last...
+                     ^
+assignment=# CREATE TABLE User( userid int, first_name varchar(255), last_name varchar(255), mobile(int), email varchar(255), username varchar(255), password varchar(255));
+ERROR:  syntax error at or near "User"
+LINE 1: CREATE TABLE User( userid int, first_name varchar(255), last...
+                     ^
+assignment=# CREATE TABLE Users( userid int, first_name varchar(255), last_name varchar(255), mobile(int), email varchar(255), username varchar(255), password varchar(255));
+ERROR:  syntax error at or near "("
+LINE 1: ..._name varchar(255), last_name varchar(255), mobile(int), ema...
+                                                             ^
+assignment=# CREATE TABLE Users( userid int, first_name varchar(255), last_name varchar(255), mobile int), email varchar(255), username varchar(255), password varchar(255));
+ERROR:  syntax error at or near ","
+LINE 1: ... varchar(255), last_name varchar(255), mobile int), email va...
+                                                             ^
+assignment=# CREATE TABLE Users( userid int, first_name varchar(255), last_name varchar(255), mobile int, email varchar(255), username varchar(255), password varchar(255));
+CREATE TABLE
+assignment=# select * from Users
+assignment-# l
+assignment-# ;
+ userid | first_name | last_name | mobile | email | username | password 
+--------+------------+-----------+--------+-------+----------+----------
+(0 rows)
+
+assignment=# create table referral(referalid int, referral_first_ name varchar(255), referral_last_name(255), mobile int, email varchar(255), userid int, date_of_referral Date, referral_points int, status varchar(255), foriegn key(userid) references users(userid));
+ERROR:  syntax error at or near "varchar"
+LINE 1: ...able referral(referalid int, referral_first_ name varchar(25...
+                                                             ^
+assignment=# create table referral(referalid int, referral_first_ name varchar(255), referral_last_name varchar(255), mobile int, email varchar(255), userid int, date_of_referral
+ Date, referral_points int, status varchar(255), foriegn key(userid) references users(userid));
+ERROR:  syntax error at or near "varchar"
+LINE 1: ...able referral(referalid int, referral_first_ name varchar(25...
+                                                             ^
+assignment=# create table referral(referalid int, referral_first_name varchar(255), referra
+Date, referral_points int, status varchar(255), foriegn key(userid) references users(userid));
+ERROR:  type "key" does not exist
+LINE 1: ...referral_points int, status varchar(255), foriegn key(userid...
+                                                             ^
+assignment=# create table referral(referalid int, referral_first_name varchar(255), referral_last_name varchar(255), mobile int, email varchar(255), userid int, date_of_referral
+Date, referral_points int, status varchar(255),FOREIGN KEY(userid) references users(userid));
+ERROR:  there is no unique constraint matching given keys for referenced table "users"
+assignment=# create table referral(referalid int, referral_first_name varchar(255), referral_last_name varchar(255), mobile int, email varchar(255), userid int, date_of_referral
+Date, referral_points int, status varchar(255), PRIMARY KEY(referalid),FOREIGN KEY(userid) references users(userid));
+ERROR:  there is no unique constraint matching given keys for referenced table "users"
+assignment=# ALTER TABLE Users ADD PRIMARY KEY(userid);
+ALTER TABLE
+assignment=# create table referral(referalid int, referral_first_name varchar(255), referral_last_name varchar(255), mobile int, email varchar(255), userid int, date_of_referral
+Date, referral_points int, status varchar(255), PRIMARY KEY(referalid),FOREIGN KEY(userid) references users(userid));
+CREATE TABLE
+assignment=# select * from referral
+assignment-# ;
+ referalid | referral_first_name | referral_last_name | mobile | email | userid | date_of_referral | referral_points | status 
+-----------+---------------------+--------------------+--------+-------+--------+------------------+-----------------+--------
+(0 rows)
+
+assignment=# create table customer(customerid int, first_name varchar(255), last_name varchar(255), email varchar(255), mobile int, primary key(customerid));
+CREATE TABLE
+assignment=# select * from customer
+assignment-# ;
+ customerid | first_name | last_name | email | mobile 
+------------+------------+-----------+-------+--------
+(0 rows)
+
+assignment=# create table buyingdetails(customerid int, userid int, purchase_date DATE, product_name varchar(255), foreign key(customerid) references customer(customerid));
+CREATE TABLE
+assignment=# select * from buyingdetails;
+ customerid | userid | purchase_date | product_name 
+------------+--------+---------------+--------------
+(0 rows)
+
+assignment=# \key
+invalid command \key
+Try \? for help.
+assignment=# \l key
+                                      List of databases
+ Name | Owner | Encoding | Collate | Ctype | ICU Locale | Locale Provider | Access privileges 
+------+-------+----------+---------+-------+------------+-----------------+-------------------
+(0 rows)
+
+assignment=# \d users
+                         Table "public.users"
+   Column   |          Type          | Collation | Nullable | Default 
+------------+------------------------+-----------+----------+---------
+ userid     | integer                |           | not null | 
+ first_name | character varying(255) |           |          | 
+ last_name  | character varying(255) |           |          | 
+ mobile     | integer                |           |          | 
+ email      | character varying(255) |           |          | 
+ username   | character varying(255) |           |          | 
+ password   | character varying(255) |           |          | 
+Indexes:
+    "users_pkey" PRIMARY KEY, btree (userid)
+Referenced by:
+    TABLE "referral" CONSTRAINT "referral_userid_fkey" FOREIGN KEY (userid) REFERENCES users(userid)
+
+assignment=# \d buyingdatails
+Did not find any relation named "buyingdatails".
+assignment=# \d buyingdetails;
+                      Table "public.buyingdetails"
+    Column     |          Type          | Collation | Nullable | Default 
+---------------+------------------------+-----------+----------+---------
+ customerid    | integer                |           |          | 
+ userid        | integer                |           |          | 
+ purchase_date | date                   |           |          | 
+ product_name  | character varying(255) |           |          | 
+Foreign-key constraints:
+    "buyingdetails_customerid_fkey" FOREIGN KEY (customerid) REFERENCES customer(customerid)
+
+assignment=# insert into Users values(1,'Snehil', 'Patel', 'snahil99@gmail.com','6306419440');
+ERROR:  invalid input syntax for type integer: "snahil99@gmail.com"
+LINE 1: insert into Users values(1,'Snehil', 'Patel', 'snahil99@gmai...
+                                                      ^
+assignment=# insert into Users values(1,'Snehil', 'Patel','6306419440');
+ERROR:  value "6306419440" is out of range for type integer
+LINE 1: insert into Users values(1,'Snehil', 'Patel','6306419440');
+                                                     ^
+assignment=# 
